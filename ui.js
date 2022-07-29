@@ -14,15 +14,15 @@ function UI() {
 
 }
 
-UI.prototype.soruGoster = function(soru) {
-    let question = `<span>${soru.soruMetni}</span>`
+UI.prototype.showQuestion = function(questions) {
+    let question = `<span>${questions.questionText}</span>`
     let options = "";
 
-    for(let cevap in soru.cevapSecenekleri) {
+    for(let answer in questions.answerOptions) {
         options += 
         `
             <div class="option">
-                <span><b>${cevap}</b>: ${soru.cevapSecenekleri[cevap]}</span>
+                <span><b>${answer}</b>: ${questions.answerOptions[answer]}</span>
             </div>
 
         `;
@@ -38,12 +38,12 @@ UI.prototype.soruGoster = function(soru) {
     }
 }
 
-UI.prototype.soruSayisiniGoster = function(soruSirasi, toplamSoru) {
-    let tag = `<span class="badge bg-warning">${soruSirasi} / ${toplamSoru}</span>`;
+UI.prototype.showQuestionNumber = function(questionOrder, totalQuestionNumber) {
+    let tag = `<span class="badge bg-warning">${questionOrder} / ${totalQuestionNumber}</span>`;
     document.querySelector(".quiz_box .question_index").innerHTML = tag;
 }
 
-UI.prototype.skoruGoster = function(toplamSoru, dogruCevap) {
-    let tag = `Toplam ${toplamSoru} sorudan ${dogruCevap} doğru cevap verdiniz.`
+UI.prototype.showScore = function(totalQuestionNumber, correctAnswer) {
+    let tag = `Answered ${correctAnswer} out of ${totalQuestionNumber} questions correctly.`
     document.querySelector(".score_box .score_text").innerHTML = tag;
 }

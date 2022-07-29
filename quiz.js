@@ -1,10 +1,10 @@
 
-function Quiz(sorular) {
-    this.sorular = sorular;
-    this.soruIndex = 0;
-    this.dogruCevapSayisi = 0;
+function Quiz(questions) {
+    this.questions = questions;
+    this.questionIndex = 0;
+    this.correctAnswerNumber = 0;
 }
 
-Quiz.prototype.soruGetir = function() {
-    return this.sorular[this.soruIndex]
+Quiz.prototype.bringQuestion = function() {
+    return this.questions[this.questionIndex]
 }

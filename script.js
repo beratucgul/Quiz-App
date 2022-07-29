@@ -1,4 +1,4 @@
-const quiz = new Quiz(sorular);
+const quiz = new Quiz(questions);
 const ui = new UI();
 
 
@@ -6,27 +6,27 @@ ui.btn_start.addEventListener("click", function() {
     ui.quiz_box.classList.add("active")
     startTimer(10);
     startTimerLine();
-    ui.soruGoster(quiz.soruGetir());
-    ui.soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length)
+    ui.showQuestion(quiz.bringQuestion());
+    ui.showQuestionNumber(quiz.questionIndex + 1, quiz.questions.length)
     ui.btn_next.classList.remove("show")
     
 })
 
 ui.btn_next.addEventListener("click", function() {
-    if(quiz.sorular.length != quiz.soruIndex + 1) {
-        quiz.soruIndex += 1;
+    if(quiz.questions.length != quiz.questionIndex + 1) {
+        quiz.questionIndex += 1;
         clearInterval(counter);
         clearInterval(counterLine);
         startTimer(10);
         startTimerLine();
-        ui.soruGoster(quiz.soruGetir());
-        ui.soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
+        ui.showQuestion(quiz.bringQuestion());
+        ui.showQuestionNumber(quiz.questionIndex + 1, quiz.questions.length);
         ui.btn_next.classList.remove("show");
     } else {
         clearInterval(counter);
         ui.quiz_box.classList.remove("active");
         ui.score_box.classList.add("active");
-        ui.skoruGoster(quiz.sorular.length, quiz.dogruCevapSayisi);
+        ui.showScore(quiz.questions.length, quiz.correctAnswerNumber);
     }
 })
 
@@ -35,8 +35,8 @@ ui.btn_quit.addEventListener("click", function() {
 })
 
 ui.btn_replay.addEventListener("click", function() {
-    quiz.soruIndex = 0;
-    quiz.dogruCevapSayisi = 0;
+    quiz.questionIndex = 0;
+    quiz.correctAnswerNumber = 0;
     ui.btn_start.click()
     ui.score_box.classList.remove("active")
 
@@ -45,11 +45,11 @@ ui.btn_replay.addEventListener("click", function() {
 function optionSelected(option) {
     clearInterval(counter);
     clearInterval(counterLine);
-    let cevap = option.querySelector("span b").textContent;
-    let soru = quiz.soruGetir();
+    let answer = option.querySelector("span b").textContent;
+    let question = quiz.bringQuestion();
 
-    if(soru.cevabiKontrolEt(cevap)) {
-        quiz.dogruCevapSayisi += 1;
+    if(question.checkAnswer(answer)) {
+        quiz.correctAnswerNumber += 1;
         option.classList.add("correct")
         option.insertAdjacentHTML("beforeend", ui.correctIcon)
     } else {
@@ -75,12 +75,12 @@ function startTimer(time) {
         if(time < 0) {
             clearInterval(counter);
 
-            ui.time_text.textContent = "Süre Bitti";
+            ui.time_text.textContent = "Time is up";
 
-            let cevap = quiz.soruGetir().dogruCevap;
+            let answer = quiz.bringQuestion().correctAnswer;
 
             for(let option of ui.option_list.children) {
-                if(option.querySelector("span b").textContent == cevap) {
+                if(option.querySelector("span b").textContent == answer) {
                     option.classList.add("correct")
                     option.insertAdjacentHTML("beforeend", ui.correctIcon)
                 }
